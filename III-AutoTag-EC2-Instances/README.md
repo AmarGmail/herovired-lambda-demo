@@ -86,62 +86,6 @@ EC2 CreateTags API
 
 The complete source code is available in [`lambda_function.py`](lambda_function.py).
 
-```python
-import json
-import os
-from datetime import datetime, timezone
-
-import boto3
-
-ec2 = boto3.client("ec2")
-
-OWNER = os.environ.get("OWNER", "admin")
-ENVIRONMENT = os.environ.get("ENVIRONMENT", "dev")
-
-
-def extract_instance_id(event):
-    """Pull the instance ID from the EventBridge event payload."""
-    instance_id = event.get("detail", {}).get("instance-id")
-    if not instance_id:
-        raise ValueError("Event missing detail.instance-id")
-    return instance_id
-
-
-def build_tags():
-    """Build the tag dictionary for the instance."""
-    return [
-        {
-            "Key": "LaunchDate",
-            "Value": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
-        },
-        {"Key": "Owner", "Value": OWNER},
-        {"Key": "Environment", "Value": ENVIRONMENT},
-        {"Key": "AutoTagged", "Value": "true"},
-    ]
-
-
-def tag_instance(instance_id, tags):
-    """Apply the tag set to the EC2 instance."""
-    ec2.create_tags(Resources=[instance_id], Tags=tags)
-    print(f"Tagged instance {instance_id} with: {tags}")
-
-
-def lambda_handler(event, context):
-    """Orchestrates extraction, tag building, and tagging."""
-    print(json.dumps(event, indent=2))
-
-    instance_id = extract_instance_id(event)
-    tags = build_tags()
-    tag_instance(instance_id, tags)
-
-    return {
-        "statusCode": 200,
-        "body": {
-            "instance_id": instance_id,
-            "applied_tags": tags,
-        },
-    }
-```
 
 ![Lambda Function Execution Role](Screenshots/AutoTag-LambdaFunction-ExecutionRule.jpg)
 
@@ -165,7 +109,7 @@ def lambda_handler(event, context):
 
 **Target:** Lambda function `AutoTag-Ec2-Instances`
 
-### AWS CLI Commands
+### AWS CLI Commands (for reference only)
 
 ```bash
 # Create the EventBridge rule
