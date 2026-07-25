@@ -8,25 +8,6 @@ The Lambda function retrieves the current month's AWS **Unblended Cost**, compar
 
 ---
 
-# Architecture
-
-```
-                Amazon EventBridge
-                (Daily Schedule)
-                        │
-                        ▼
-                AWS Lambda Function
-                        │
-        ┌───────────────┴────────────────┐
-        ▼                                ▼
- AWS Cost Explorer                 Amazon SNS
-(GetCostAndUsage API)          (Email Notification)
-        │                                │
-        └───────────────► User Email ◄───┘
-```
-
----
-
 # AWS Services Used
 
 - AWS Lambda
@@ -185,13 +166,9 @@ IV-Daily-Cost-Report/
 
 AWS provides **AWS Budgets** as a managed service for cost monitoring and alerts.
 
-Using AWS Lambda is preferable when:
+Managed Alternative: AWS Budgets can automatically monitor AWS spending and send notifications when predefined thresholds are exceeded, requiring little to no custom code.
 
-- custom spending thresholds are required
-- per-service cost analysis is needed
-- Slack, Teams, or custom webhook notifications are required
-- anomaly detection or custom business logic must be implemented
-- multiple AWS accounts need centralized reporting
+Why use Lambda instead? Lambda provides greater flexibility for implementing custom business logic, such as sending alerts based on specific AWS services, applying anomaly detection, integrating with Slack or Microsoft Teams, or triggering automated remediation workflows in response to spending patterns.
 
 ---
 
@@ -200,26 +177,3 @@ Using AWS Lambda is preferable when:
 While testing on a Free Tier account with promotional credits, the AWS Billing dashboard displayed approximately **$10.16** in estimated usage, whereas the Cost Explorer API returned an **UnblendedCost** close to **$0.00** because promotional credits offset the actual billable amount. This behavior is expected and demonstrates the difference between usage costs and billable charges.
 
 ---
-
-
-#Objective: Build an automated alert when AWS spend exceeds a threshold.
-
-
-##Step 1: Create SNS Topic
-Create a standard SNS Topic and subscribe to an email.
-
-##Step 2: Create IAM Role with Inline policy and attach AWSLambdaBasicExecutionRole.
-
-##Step 3: Create a lambda function and attach the execution policy above.
-There are two functions get_month_to_date_cost and publish_alert(cost)
-which are called from lambda_handler to get the cost of the month and trigger alert to SNS queue which in turn send an email to the subscriber.
-
-##Step 4: Verified lambda test function
-
-##step 5: verified cloudTril and CloudWatch for email event
-
-###Discussion Point:
-Managed Alternative: AWS Budgets can automatically monitor AWS spending and send notifications when predefined thresholds are exceeded, requiring little to no custom code.
-Why use Lambda instead? Lambda provides greater flexibility for implementing custom business logic, such as sending alerts based on specific AWS services, applying anomaly detection, integrating with Slack or Microsoft Teams, or triggering automated remediation workflows in response to spending patterns.
-
-
