@@ -48,17 +48,11 @@ The SNS Publish permission should be scoped to the SNS Topic ARN.
 ---
 
 # Environment Variables
-
+```
 | Variable | Description |
 |-----------|-------------|
-| SNS_TOPIC_ARN | SNS Topic ARN |
-| THRESHOLD | Cost threshold in USD |
-
-Example
-
-```
-SNS_TOPIC_ARN=arn:aws:sns:us-east-1:123456789012:DailyCostAlerts
-THRESHOLD=0.01
+| SNS_TOPIC_ARN | arn:aws:sns:us-east-1:729598252377:cost-alert-topic |
+| THRESHOLD | 0.0000001 |
 ```
 
 ---
@@ -98,21 +92,21 @@ Cron: Every day at 09:00 UTC
 
 Set a very low threshold.
 
-Example:
-
 ```
 THRESHOLD=0.0000001
 ```
 
 Invoke the Lambda manually.
 
-Expected output:
+ Output:
 
 ```
-Month-to-date UnblendedCost: $0.0000004
-Configured threshold: $0.0000001
-ALERT: Spend exceeds threshold.
-SNS alert published.
+{
+  "statusCode": 200,
+  "this_month_unblended_cost": "$0.0000004",
+  "threshold": 1e-7,
+  "alert_sent": true
+}
 ```
 
 ---
@@ -132,11 +126,36 @@ CloudWatch captures:
 
 # Screenshots
 
-- IAM Role Permissions
-- SNS Topic and Email Subscription
-- Lambda Test Execution
-- CloudWatch Logs
-- Email Notification
+# Screenshots
+
+## 1. IAM Role and Inline Policy
+
+![IAM Role](Screenshots/DailyCostReport-IAMRole-AWSLambdaBasicExecutionRole-InlinePolicy.jpg)
+
+---
+
+## 2. SNS Topic and Email Subscription
+
+![SNS Topic](Screenshots/DailyCostReport-SNS-Topic-SubscriptionConfirmation.jpg)
+
+---
+
+## 3. Lambda Function Test
+
+![Lambda Test](Screenshots/DailyCostReport-Lambda_test_run.jpg)
+
+---
+
+## 4. CloudWatch Logs
+
+![CloudWatch Logs](Screenshots/DailyCostReport-CloudTraillSNSTpoic_EmailLogs.jpg)
+
+---
+
+## 5. Email
+
+![CloudWatch Logs](Screenshots/DailyCostReport-EmailNotification.jpg)
+
 
 All screenshots are available under:
 
@@ -146,7 +165,7 @@ Screenshots/
 
 ---
 
-# Project Structure
+# Assignment Structure
 
 ```
 IV-Daily-Cost-Report/
@@ -158,6 +177,7 @@ IV-Daily-Cost-Report/
     ├── DailyCostReport-SNS-Topic-SubscriptionConfirmation.jpg
     ├── DailyCostReport-Lambda_test_run.jpg
     └── DailyCostReport-CloudTraillSNSTpoic_EmailLogs.jpg
+    └── DailyCostReport-EmailNotification.jpg
 ```
 
 ---
