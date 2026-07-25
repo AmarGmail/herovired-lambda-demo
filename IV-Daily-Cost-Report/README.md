@@ -124,7 +124,6 @@ CloudWatch captures:
 
 ---
 
-# Screenshots
 
 # Screenshots
 
@@ -156,12 +155,7 @@ CloudWatch captures:
 
 ![CloudWatch Logs](Screenshots/DailyCostReport-EmailNotification.jpg)
 
-
-All screenshots are available under:
-
-```
-Screenshots/
-```
+---
 
 ---
 
