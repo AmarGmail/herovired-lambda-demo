@@ -79,8 +79,8 @@ EC2 CreateTags API
 
 | Key | Example Value | Description |
 |-----|---------------|-------------|
-| `OWNER` | `DevOps-Team` | Default owner tag applied to instances |
-| `ENVIRONMENT` | `production` | Environment identifier (dev, staging, production) |
+| `OWNER` | `admin` | Default owner tag applied to instances |
+| `ENVIRONMENT` | `dev` | Environment identifier (dev, staging, production) |
 
 ### Source Code
 
@@ -172,14 +172,6 @@ Use this EventBridge-shaped test event in the Lambda console to verify the funct
 
 ![Instance Tags Verified](Screenshots/Instance-Tag_verified.jpg)
 
-**Expected Tags:**
-
-| Tag Key | Example Value |
-|---------|---------------|
-| `LaunchDate` | `2026-07-25` |
-| `Owner` | `DevOps-Team` (from env var) |
-| `Environment` | `production` (from env var) |
-| `AutoTagged` | `true` |
 
 ---
 
